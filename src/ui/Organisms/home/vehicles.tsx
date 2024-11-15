@@ -1,14 +1,14 @@
 'use client'
-import { IVehiclesResponse } from "@/src/app/core/application/dto/cars/getAllCars.dto";
+import { ICarsResponse } from "@/src/app/core/application/dto/cars/response.dto";
 import { useRouter, useSearchParams } from "next/navigation";
 import styled from "styled-components";
 import TableComponent from "../../Molecules/Table";
-import ButtonPag from "../../Atoms/buttonPag";
 
 interface MainProps {
     onEdit?: (rowIndex: number) => void;
+    onView?: (rowId: number) => void;
     onDelete?: (rowIndex: number) => void;
-    data: IVehiclesResponse;
+    data: ICarsResponse;
 }
 
 const Pagination = styled.div`
@@ -17,6 +17,7 @@ const Pagination = styled.div`
     justify-content: center;
     align-items: center;
     font-size: 15px;
+    margin-top: 20px;
 `;
 
 const MainContent = styled.div`
@@ -29,36 +30,50 @@ const MainContent = styled.div`
 `;
 
 const StyledDiv = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
+    margin-top: 10px;
+`;
+
+const PaginationButton = styled.button<{ isActive: boolean }>`
+    background-color: ${(props) => (props.isActive ? "#7692FF" : "#e0e0e0")};
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 14px;
+    margin: 0 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+        background-color: #0056b3;
+    }
 `;
 
 export default function MainComponent({ data, onEdit, onDelete }: MainProps) {
-
     const searchParams = useSearchParams();
     const router = useRouter();
 
-    const HandleClickNext = (nextPage: number) => {
+    const HandleClickPage = (page: number) => {
         const params = new URLSearchParams(searchParams.toString());
-        if (nextPage <= data.metadata.totalPages) {
-            params.set('page', nextPage.toString());
-            router.push(`?${params.toString()}`);
-        }
-    };
-
-    const HandleClickBack = (backPage: number) => {
-        const params = new URLSearchParams(searchParams.toString());
-        if (backPage > 0) {
-            params.set('page', backPage.toString());
+        if (page >= 1 && page <= data.metadata.totalPages) {
+            params.set('page', page.toString());
             router.push(`?${params.toString()}`);
         }
     };
 
     const courrentPage = data.metadata.currentPage;
+    const totalPages = data.metadata.totalPages;
+
+    const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);  // Generar números de páginas
 
     const content = data.data;
-
-    console.log(content);
-
     const tbody = content;
 
     return (
@@ -67,9 +82,15 @@ export default function MainComponent({ data, onEdit, onDelete }: MainProps) {
                 <TableComponent tbody={tbody} onEdit={onEdit} onDelete={onDelete} />
             </StyledDiv>
             <Pagination>
-                <ButtonPag label="<" onClick={() => HandleClickBack(courrentPage - 1)} />
-                Página {courrentPage} de {data.metadata.totalPages}
-                <ButtonPag label=">" onClick={() => HandleClickNext(courrentPage + 1)} />
+                {pageNumbers.map((page) => (
+                    <PaginationButton
+                        key={page}
+                        isActive={page === courrentPage}
+                        onClick={() => HandleClickPage(page)}
+                    >
+                        {page}
+                    </PaginationButton>
+                ))}
             </Pagination>
         </MainContent>
     )

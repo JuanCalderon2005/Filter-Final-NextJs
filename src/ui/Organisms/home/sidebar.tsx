@@ -1,100 +1,130 @@
-'use client'
+'use client';
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Button from "../../Atoms/button";
+import { CustomSession } from "@/src/app/api/auth/[...nextauth]/route";
 
 const Sidebar = styled.nav`
+  position: fixed;
   left: 0;
   width: 17vw;
   height: 100vh;
-  background-color: white;
+  background-color: #ffffff;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+`;
+
+const ProfileContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+`;
+
+const ProfileImage = styled.img`
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+  background-color: #f0f0f0;
+`;
+
+const UserName = styled.h2`
+  font-size: 20px;
+  color: #141414;
+  margin: 0;
 `;
 
 const SidebarList = styled.ul`
   list-style: none;
   padding: 0;
-  margin: 0;
-`;
-
-const NamePage = styled.h1`
-  color: #141414;
-  font-size: 25px;
-  padding: 20px;
-  margin-bottom: 30px;
+  margin: 20px 0 0;
+  width: 100%;
 `;
 
 const SidebarItem = styled.li`
   margin: 15px 0;
-  display: flex;
-  align-items: center;
-  justify-content: start;
 `;
 
 const StyledLinkWrapper = styled.div<{ $isActive: boolean }>`
   display: flex;
   align-items: center;
-  justify-content: start;
-  padding: 17px;
+  padding: 15px;
   width: 100%;
-  height: 45px;
   color: ${(props) => (props.$isActive ? "#313131" : "#313131")};
   background-color: ${(props) => (props.$isActive ? "#d7d7d7" : "transparent")};
+  cursor: pointer;
 
   &:hover {
     background-color: #a2a2a2;
-    color: #fff;
+    color: #ffffff;
   }
 
   a {
     text-decoration: none;
-    font-size: 20px;
-    padding: 10px;
-    display: block;
+    font-size: 16px;
+    color: inherit;
+    flex-grow: 1;
+  }
+
+  svg {
+    margin-right: 10px;
   }
 `;
 
 const ButtonLogout = styled(Button)`
   display: flex;
-  justify-content: start;
-  color: #313131;
-  font-size: 20px;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  height: 45px;
-  border-radius: 0;
-  border: none;
+  padding: 15px;
+  font-size: 16px;
   background-color: transparent;
+  color: #313131;
+  border: none;
+  cursor: pointer;
 
   &:hover {
     background-color: #d7d7d7;
-    color: #fff;
+    color: #ffffff;
   }
 `;
 
 export default function SidebarDashboard() {
+  const { data: session } = useSession();
+  const sessionUser = session as CustomSession;
   const pathname = usePathname();
+
   const handleLogout = async () => {
     await signOut();
   };
 
   return (
     <Sidebar>
+      <ProfileContainer>
+        <ProfileImage
+          src={sessionUser?.user?.image || "/default-profile.png"}
+          alt="Foto de perfil"
+        />
+        <UserName>{sessionUser?.user?.name || "Usuario"}</UserName>
+      </ProfileContainer>
       <SidebarList>
-        <NamePage>VolunteerConnect</NamePage>
         <SidebarItem>
-          <StyledLinkWrapper $isActive={pathname === "/dashboard"}>
+          <StyledLinkWrapper $isActive={pathname === "/dashboard/services"}>
             <Icon icon="mdi:car" width="20" height="20" />
-            <Link href="/dashboard/services" prefetch={false}>Vehiculos</Link>
+            <Link href="/dashboard/services" prefetch={false}>Vehículos</Link>
           </StyledLinkWrapper>
         </SidebarItem>
         <SidebarItem>
           <ButtonLogout
             label="Cerrar Sesión"
-            icon='MaterialSymbolsLogout'
+            icon="MaterialSymbolsLogout"
             onClick={handleLogout}
           />
         </SidebarItem>

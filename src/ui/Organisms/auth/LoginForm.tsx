@@ -149,7 +149,6 @@ const LoginForm = () => {
                 placeholder="Ingrese Contraseña"
             />
             <ButtonLogin
-                icon="uil:padlock"
                 type="submit"
                 label="Iniciar Sesión"
                 onClick={() => console.log('Iniciar Sesión')}

@@ -1,25 +1,33 @@
-import { EventData } from '@/src/app/core/application/dto/cars/getAllCars.dto';
 import React from 'react';
 import styled from 'styled-components';
+import { Icon } from '@iconify/react';
+import Image from 'next/image';
+import Button from '../Atoms/button';
+import { Vehicle } from '@/src/app/core/application/dto/cars/response.dto';
 
 interface ITableProps {
-  tbody: EventData[];
+  tbody: Vehicle[];
   onEdit?: (rowId: number) => void;
+  onView?: (rowId: number) => void;
   onDelete?: (rowId: number) => void;
 }
 
 const StyledTable = styled.table`
-  width: 100%;
+  width: 97%;
+  max-width: 100%;
+  border-radius: 10px;
   border-collapse: collapse;
   background-color: white;
-  
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
   th, td {
     border-bottom: 1px solid #ddd;
-    padding: 8px;
+    padding: 12px;  
     text-align: left;
-    font-size: 13px;
+    font-size: 14px; 
   }
-  
+
   th {
     background-color: transparent;
     color: #818181;
@@ -27,25 +35,35 @@ const StyledTable = styled.table`
 
   td {
     color: #4d4d4d;
+    height: 80px;
   }
 
   td.Colum-Buttons {
-    width: 180px;
-    text-align: center;
+    width: 200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
-  td.Colum-title{
+  td.Colum-photo {
+    width: 150px; 
     font-weight: bold;
+    position: relative;
+    img {
+      object-fit: cover; 
+      width: 100%;
+      height: 60px; 
+    }
   }
 
-  td.Colum-date {
-    width: 110px;
+  td.Colum-model{
+    width: 200px;
   }
 
   .status {
-  padding: 2px 6px;
-  border-radius: 10px; 
-  color: #3e3e3e87; 
+    padding: 2px 6px;
+    border-radius: 10px;
+    color: #3e3e3e87;
   }
 
   .status.activo {
@@ -57,62 +75,69 @@ const StyledTable = styled.table`
   }
 `;
 
-const ActionButton = styled.button`
-  margin: 0 5px;
-  padding: 5px 10px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
+const ButtonEdit = styled(Button)`
+  background-color: transparent;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  &.edit {
-    background-color: white;
-    color: #191919;
-    border: 1px solid #686868;
-  }
-
-  &.delete {
-    background-color: #ff1100cf;
-    color: white;
+  &:hover {
+    background-color: #dededebe;
   }
 `;
 
-export default function TableComponent({ tbody, onEdit, onDelete }: ITableProps) {
+const ButtonHistory = styled(Button)`
+  background-color: transparent;
+  width: 20px;
+  height: 20px;
+`;
+
+const ButtonDelete = styled(Button)`
+  background-color: transparent;
+  width: 20px;
+  height: 20px;
+`;
+
+export default function TableComponent({ tbody, onEdit, onView, onDelete }: ITableProps) {
   return (
     <StyledTable>
       <thead>
         <tr>
-          <th>Titulo</th>
-          <th>Descripcion</th>
-          <th>Fecha de Inicio</th>
-          <th>Fecha de Fin</th>
-          <th>Estado</th>
-          <th>Organizador</th>
+          <th>Foto</th>
+          <th>Marca</th>
+          <th>Modelo</th>
+          <th>Año</th>
+          <th>Placa</th>
           <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
         {tbody.map((row, rowIndex) => (
           <tr key={rowIndex}>
-            <td className='Colum-title'>{row.id}</td>
-            <td>{row.licensePlate}</td>
-            <td className='Colum-date'>{row.make}</td>
-            <td className='Colum-date'>{row.model}</td>
-            <td className="Colum-Status">{row.photo}</td>
-            <td>{row.year}</td>
+            <td className='Colum-photo'>
+              {row.photo ? (
+                <Image
+                  src={row.photo}
+                  alt={`Vehicle ${rowIndex}`}
+                  width={150}
+                  height={50}
+                  objectFit="cover"
+                  priority
+                />
+              ) : (
+                <span>No image</span>
+              )}
+            </td>
+            <td className='Colum-model'>{row.make}</td>
+            <td className='Colum-model'>{row.model}</td>
+            <td className='Colum-model'>{row.year}</td>
+            <td className="Colum-Status">{row.licensePlate}</td>
             <td className="Colum-Buttons">
-              <ActionButton
-                className="edit"
-                onClick={() => onEdit && onEdit(row.id)}
-              >
-                Editar
-              </ActionButton>
-              <ActionButton
-                className="delete"
-                onClick={() => onDelete && onDelete(row.id)}
-              >
-                Eliminar
-              </ActionButton>
+              <ButtonEdit onClick={() => onEdit && onEdit(row.id)} icon={<Icon icon="mage:edit" width="20" height="20" color="#9E9E9E54" />} />
+              <ButtonHistory onClick={() => onView && onView(row.id)} icon={<Icon icon="material-symbols:history" width="20" height="20" color="#9E9E9E54" />} />
+              <ButtonDelete onClick={() => onDelete && onDelete(row.id)} icon={<Icon icon="fluent:delete-20-regular" width="20" height="20" color="#9E9E9E54" />} />
             </td>
           </tr>
         ))}
