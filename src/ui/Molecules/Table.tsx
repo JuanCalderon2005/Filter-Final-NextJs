@@ -1,4 +1,3 @@
-'use client'
 import { EventData } from '@/src/app/core/application/dto/cars/getAllCars.dto';
 import React from 'react';
 import styled from 'styled-components';
@@ -95,11 +94,11 @@ export default function TableComponent({ tbody, onEdit, onDelete }: ITableProps)
       <tbody>
         {tbody.map((row, rowIndex) => (
           <tr key={rowIndex}>
-            <td className='Colum-title'>{row.photo}</td>
-            <td>{row.model}</td>
+            <td className='Colum-title'>{row.id}</td>
+            <td>{row.licensePlate}</td>
             <td className='Colum-date'>{row.make}</td>
-            <td className='Colum-date'>{row.licensePlate}</td>
-            <td className="Colum-Status">{row.id}</td>
+            <td className='Colum-date'>{row.model}</td>
+            <td className="Colum-Status">{row.photo}</td>
             <td>{row.year}</td>
             <td className="Colum-Buttons">
               <ActionButton
