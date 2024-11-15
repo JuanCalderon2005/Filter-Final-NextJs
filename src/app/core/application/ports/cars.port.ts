@@ -1,6 +1,6 @@
-import { ICarsRequest, IVehiclesResponse } from "../dto/cars/getAllCars.dto";
+import {IVehiclesRequest, IVehiclesResponse } from "../dto/cars/getAllCars.dto";
 
 export interface PCars{
-    getCars({page,size}:ICarsRequest):Promise<IVehiclesResponse>
+    getCars({page,size}:IVehiclesRequest):Promise<IVehiclesResponse>
 
 }

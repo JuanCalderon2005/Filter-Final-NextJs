@@ -32,12 +32,12 @@ export interface IVehiclesRequest {
 export interface IVehiclesResponse {
   statusCode: number;
   message: string;
-  data: Vehicle[];
+  data: EventData[];
   metadata: Metadata;
 }
 
 export interface IVehicleResponse {
   statusCode: number;
   message: string;
-  data: Vehicle[];
+  data: EventData[];
 }
