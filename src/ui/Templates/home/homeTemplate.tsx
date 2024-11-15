@@ -4,6 +4,9 @@ import styled from "styled-components";
 import VehicleList from "../../Organisms/home/vehicles";
 import PageHeader from "../../Organisms/main/header";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import Modal from "../../Atoms/modal";
+import EditForm from "../../Organisms/Forms/EditForm";
 
 interface Props {
     data: ICarsResponse;
@@ -23,10 +26,18 @@ const Content = styled.div`
 
 const MainPage: React.FC<Props> = ({ data }) => {
 
+    const [ModalOpenEdit, setModalOpenEdit] = useState(false);
+    const [SelectIdEdit, setSelectIdEdit] = useState<number>(1);
+
     const router = useRouter();
 
-    const handleEdit = (id: number) => {
-        // Implement edit functionality here
+    const toggleModalEdit = () => {
+        setModalOpenEdit(!ModalOpenEdit);
+    }
+
+    const handleEdit = (Id: number) => {
+        setSelectIdEdit(Id);
+        toggleModalEdit();
     };
 
     const handleDelete = async (Id: number) => {
@@ -60,6 +71,9 @@ const MainPage: React.FC<Props> = ({ data }) => {
             <Content>
                 <VehicleList data={data} onEdit={handleEdit} onDelete={handleDelete} onView={handleView} />
             </Content>
+           <Modal isOpen={ModalOpenEdit} onClose={toggleModalEdit} title="Editar servicio">
+                <EditForm onClose={toggleModalEdit} Id={SelectIdEdit} />
+            </Modal> 
         </Wrapper>
     );
 };
