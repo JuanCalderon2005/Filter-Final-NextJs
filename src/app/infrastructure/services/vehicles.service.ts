@@ -1,4 +1,4 @@
-import { ICarsRequest, IVehiclesResponse } from "../../core/application/dto/cars/getAllCars.dto";
+import { IVehicleResponse, IVehiclesRequest, IVehiclesResponse } from "../../core/application/dto/cars/getAllCars.dto";
 import { PCars } from "../../core/application/ports/cars.port";
 import { HttpClient } from "../utils/client-http";
 
@@ -9,7 +9,7 @@ export class VehiclesServices implements PCars {
     this.clientHttp = new HttpClient();
   }
 
-  async getCars({ page, size }: ICarsRequest): Promise<IVehiclesResponse> {
+  async getCars({ page, size }: IVehiclesRequest): Promise<IVehiclesResponse> {
       try {
         const response = await this.clientHttp.get<IVehiclesResponse>(`/vehicles?page=${page}&size=${size}`);
         return response;
@@ -17,5 +17,15 @@ export class VehiclesServices implements PCars {
         console.log(error);
         throw error;
       }
+  }
+
+  async getCarById(id: number): Promise<IVehicleResponse> {
+    try {
+      const response = await this.clientHttp.get<IVehiclesResponse>(`/vehicles/${id}`);
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   }
 }

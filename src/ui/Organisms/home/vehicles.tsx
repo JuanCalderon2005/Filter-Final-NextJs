@@ -57,6 +57,8 @@ export default function MainComponent({ data, onEdit, onDelete }: MainProps) {
 
     const content = data.data;
 
+    console.log(content);
+
     const tbody = content;
 
     return (
