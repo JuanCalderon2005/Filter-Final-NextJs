@@ -2,6 +2,9 @@
 import styled from "styled-components";
 import { Icon } from '@iconify/react';
 import Button from "../Atoms/button";
+import { useState } from "react";
+import Modal from "../Atoms/modal";
+import RegisterForm from "../Organisms/Forms/registerCarForm";
 
 const ButtonsContainer = styled.div`
   display: flex;
@@ -38,17 +41,37 @@ const DownloadReportButton = styled(Button)`
   }
 `;
 
+
 export default function ButtonsAddDownload() {
-    return (
-        <ButtonsContainer>
-            <AddCarButton
-                label="Agregar Vehículo"
-                icon={<Icon icon="lets-icons:add-duotone" width="30" height="30" color="#FFF" />}
-            />
-            <DownloadReportButton
-                label="Descargar Reporte"
-                icon={<Icon icon="uiw:file-excel" width="20" height="20" color="#FFF" />}
-            />
-        </ButtonsContainer>
-    );
+
+  const [ModalOpenRegister, setModalOpenRegister] = useState(false);
+
+  const toggleModalRegister = () => {
+    setModalOpenRegister(!ModalOpenRegister);
+  }
+
+  const handleAdd = () => {
+    toggleModalRegister();
+  }
+
+  return (
+    <ButtonsContainer>
+      <AddCarButton
+        label="Agregar Vehículo"
+        icon={<Icon icon="lets-icons:add-duotone" width="30" height="30" color="#FFF" onClick={handleAdd} />}
+      />
+      <DownloadReportButton
+        label="Descargar Reporte"
+        icon={<Icon icon="uiw:file-excel" width="20" height="20" color="#FFF" />}
+      />
+      <Modal
+        isOpen={ModalOpenRegister}
+        onClose={toggleModalRegister}
+        title="Agregar Vehículo"
+      >
+        <RegisterForm onClose={toggleModalRegister} />
+      </Modal>
+
+    </ButtonsContainer>
+  );
 }

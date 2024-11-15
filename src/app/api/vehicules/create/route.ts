@@ -1,17 +1,15 @@
-import { CreateCarRequest } from "@/src/app/core/application/dto/cars/create/request.dto";
 import { VehiclesServices } from "@/src/app/infrastructure/services/vehicles.service";
 import { NextResponse } from "next/server";
 
 const useCreateVehicule = new VehiclesServices();
+export async function POST(req: Request) {
+    try {
+        const formData = await req.formData();  
+        const newUser = await useCreateVehicule.createCar(formData);
 
-export default async function POST(req: Request) {
-  try {
-    const body: CreateCarRequest = await req.json();
-    const response = await useCreateVehicule.createCar(body);
-
-    return NextResponse.json(response, { status: 200 });
-  } catch (error) {
-    console.log(error);
-    return NextResponse.json(error, { status: 500 });
-  }
+        return NextResponse.json(newUser, { status: 200 });
+    } catch (error) {
+        console.error("Error en el servidor:", error);
+        return NextResponse.json({ error: "Error al procesar la solicitud" }, { status: 500 });
+    }
 }

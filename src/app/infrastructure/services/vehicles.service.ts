@@ -1,4 +1,3 @@
-import { CreateCarRequest } from "../../core/application/dto/cars/create/request.dto";
 import { CreateCarResponse } from "../../core/application/dto/cars/create/response.dto";
 import { ICarsRequest } from "../../core/application/dto/cars/request.dto";
 import { ICarsResponse } from "../../core/application/dto/cars/response.dto";
@@ -22,9 +21,9 @@ export class VehiclesServices implements PCars {
       }
   }
 
-  async createCar(card: CreateCarRequest): Promise<CreateCarResponse> {
+  async createCar(card: FormData): Promise<CreateCarResponse> {
     try {
-      const response = await this.clientHttp.post<CreateCarResponse,CreateCarRequest>(`vehicles`, card);
+      const response = await this.clientHttp.post<CreateCarResponse,FormData>(`vehicles`, card, true);
       return response;
     } catch (error) {
       console.log(error);
