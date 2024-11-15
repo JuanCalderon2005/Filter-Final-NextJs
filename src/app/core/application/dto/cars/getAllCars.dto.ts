@@ -15,7 +15,16 @@ export interface Metadata {
   currentPage: number;
 }
 
-export interface ICarsRequest {
+export interface EventData {
+  photo: string | null;
+  make: string;
+  model: string;
+  year: number;
+  licensePlate: string;
+  id: number; 
+}
+
+export interface IVehiclesRequest {
   page: number;
   size: number;
 }
@@ -25,4 +34,10 @@ export interface IVehiclesResponse {
   message: string;
   data: Vehicle[];
   metadata: Metadata;
+}
+
+export interface IVehicleResponse {
+  statusCode: number;
+  message: string;
+  data: Vehicle[];
 }
