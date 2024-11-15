@@ -3,6 +3,7 @@ import { ICarsResponse } from "@/src/app/core/application/dto/cars/response.dto"
 import styled from "styled-components";
 import VehicleList from "../../Organisms/home/vehicles";
 import PageHeader from "../../Organisms/main/header";
+import { useRouter } from "next/navigation";
 
 interface Props {
     data: ICarsResponse;
@@ -21,12 +22,32 @@ const Content = styled.div`
 `;
 
 const MainPage: React.FC<Props> = ({ data }) => {
+
+    const router = useRouter();
+
     const handleEdit = (id: number) => {
         // Implement edit functionality here
     };
 
-    const handleDelete = (id: number) => {
-        // Implement delete functionality here
+    const handleDelete = async (Id: number) => {
+        try {
+            const response = await fetch(`/api/vehicules/delete/${Id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            console.log("Response DELETE:", response);
+
+            alert("Proyecto eliminado exitosamente");
+            router.refresh();
+            return await response.json();
+
+        } catch (error) {
+            console.error("Error en el DELETE:", error);
+            throw error;
+        }
     };
 
     const handleView = (id: number) => {
