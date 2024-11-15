@@ -1,50 +1,45 @@
-import styled from "styled-components";
+'use client';
+import React from 'react';
+import styled from 'styled-components';
+import { Icon } from '@iconify/react';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    label?: string;
-    icon?: React.ReactNode;
-    type?: 'button' | 'submit' | 'reset';
-    onClick?: () => void;
+interface ButtonProps {
+  icon?: string;
+  type?: 'button' | 'submit' | 'reset';
+  label: string;
+  className?: string;
+  onClick?: () => void;
 }
 
 const StyledButton = styled.button`
-    width: 100%;
-    padding: 0.5rem 1rem;
-    background-color: #1a1a1a;
-    color: white;
-    font-weight: 500;
-    border-radius: 0.375rem;
-    transition: background-color 0.3s ease;
-    text-align: center;
-    cursor: pointer;
-    display: flex;         
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 
-    &:hover {
-        background-color: #545454;
-    }
+  &:hover {
+    background-color: #4338ca;
+  }
+
+  .icon {
+    font-size: 1.25rem;
+  }
 `;
 
-const IconWrapper = styled.span`
-    margin-right: 0.5rem;  
-    display: flex;
-    align-items: center;
-`;
-
-const Button = ({
-    label,
-    icon,
-    type = 'button',
-    onClick,
-    ...props
-}: ButtonProps) => {
-    return (
-        <StyledButton type={type} onClick={onClick} {...props}>
-            {icon && <IconWrapper>{icon}</IconWrapper>}
-            {label}
-        </StyledButton>
-    );
+const Button: React.FC<ButtonProps> = ({ icon, type = 'button', label, className, onClick }) => {
+  return (
+    <StyledButton type={type} onClick={onClick} className={className}>
+      {icon && <Icon icon={icon} className="icon" />}
+      {label}
+    </StyledButton>
+  );
 };
 
 export default Button;

@@ -9,6 +9,7 @@ import { ILoginRequestDto } from "@/src/app/core/application/dto/auth/login-requ
 import Button from "../../Atoms/button";
 import { ErrorResponse, FieldError } from "@/src/app/core/application/dto/common/error-response.dto";
 import FormField from "../../Molecules/FormField";
+import IconAtom from "../../Atoms/icons";
 
 const loginSchema = yup.object().shape({
     email: yup
@@ -29,6 +30,7 @@ const FormContainer = styled.form`
     padding: 1rem;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 1rem;
     `;
 
@@ -36,31 +38,20 @@ const Title = styled.h2`
     font-size: 1.5rem;
     font-weight: 600;
     text-align: center;
-    color: #1f1f1f;
+    color: #7692ff;
     `;
 
 const InstructionText = styled.p`
     text-align: center;
     font-size: 13px;    
     margin-bottom: 1rem;
-    color: #666666;
+    color: #2f2b3d;
 `;
-
 const Buttons = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-`;
-
-const ButtonForgotPassword = styled(Button)`
-    font-size: 15px;
-    background-color: transparent;
-    border: none;
-    color: #0c8eff;
-    &:hover {
-        background-color: transparent;
-    }
 `;
 
 const DivButton = styled.div`
@@ -75,17 +66,15 @@ const PText = styled.p`
     margin-right: 3px;
 `;
 
-const ButtonRegister = styled(Button)`
-    font-size: 15px;
-    width: auto;
-    padding: 0;
-    background-color: transparent;
-    border: none;
-    color: #0c8eff;
-    &:hover {
-        background-color: transparent;
-    }
-`;
+const ButtonLogin = styled(Button)`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    background-color: #7692ff;
+    
+`
+
 const LoginForm = () => {
     const router = useRouter();
     const {
@@ -140,8 +129,9 @@ const LoginForm = () => {
 
     return (
         <FormContainer onSubmit={handleSubmit(handleLogin)}>
-            <Title>Iniciar Sesión</Title>
-            <InstructionText>Ingresa tus credenciales para acceder a tu cuenta</InstructionText>
+            <IconAtom icon="proicons:vehicle-car" size={48} color="#7692ff" />
+            <Title>Transport Solutions S.A</Title>
+            <InstructionText>Inicia sesion en tu cuenta y gestiona tu flota de vehiculos</InstructionText>
             <FormField<ILoginRequestDto>
                 control={control}
                 type="email"
@@ -158,12 +148,15 @@ const LoginForm = () => {
                 error={errors.password}
                 placeholder="Ingrese Contraseña"
             />
-            <Button type="submit" label="Iniciar Sesión" />
+            <ButtonLogin
+                icon="uil:padlock"
+                type="submit"
+                label="Iniciar Sesión"
+                onClick={() => console.log('Iniciar Sesión')}
+            />
             <Buttons>
-                <ButtonForgotPassword label="¿Olvidaste tu Contraseña?" />
                 <DivButton>
-                    <PText>¿No tienes una cuenta? </PText>
-                    <ButtonRegister label="Registrate Aqui" />
+                    <PText>¿Problemas para iniciar sesión?</PText>
                 </DivButton>
             </Buttons>
         </FormContainer>

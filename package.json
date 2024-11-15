@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
+    "@iconify/react": "^5.0.2",
     "@types/styled-components": "^5.1.34",
     "@types/yup": "^0.29.14",
     "next": "14.2.16",
