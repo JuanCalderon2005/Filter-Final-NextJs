@@ -1,4 +1,5 @@
 import { CreateCarResponse } from "../../core/application/dto/cars/create/response.dto";
+import { DeleteCarResponseDto } from "../../core/application/dto/cars/delete/response.dto";
 import { ICarsRequest } from "../../core/application/dto/cars/request.dto";
 import { ICarsResponse } from "../../core/application/dto/cars/response.dto";
 import { PCars } from "../../core/application/ports/cars.port";
@@ -12,18 +13,36 @@ export class VehiclesServices implements PCars {
   }
 
   async getCars({ page, size }: ICarsRequest): Promise<ICarsResponse> {
-      try {
-        const response = await this.clientHttp.get<ICarsResponse>(`vehicles?page=${page}&size=${size}`);
-        return response;
-      } catch (error) {
-        console.log(error);
-        throw error;
-      }
+    try {
+      const response = await this.clientHttp.get<ICarsResponse>(
+        `vehicles?page=${page}&size=${size}`
+      );
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   }
 
   async createCar(card: FormData): Promise<CreateCarResponse> {
     try {
-      const response = await this.clientHttp.post<CreateCarResponse,FormData>(`vehicles`, card, true);
+      const response = await this.clientHttp.post<CreateCarResponse, FormData>(
+        `vehicles`,
+        card,
+        true
+      );
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  async deleteCar(id: number): Promise<DeleteCarResponseDto> {
+    try {
+      const response = await this.clientHttp.delete<DeleteCarResponseDto>(
+        `vehicles/${id}`
+      );
       return response;
     } catch (error) {
       console.log(error);
