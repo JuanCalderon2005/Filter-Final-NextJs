@@ -23,9 +23,9 @@ const StyledTable = styled.table`
 
   th, td {
     border-bottom: 1px solid #ddd;
-    padding: 12px;  
+    padding: 12px;
     text-align: left;
-    font-size: 14px; 
+    font-size: 14px;
   }
 
   th {
@@ -46,17 +46,17 @@ const StyledTable = styled.table`
   }
 
   td.Colum-photo {
-    width: 150px; 
+    width: 150px;
     font-weight: bold;
     position: relative;
     img {
-      object-fit: cover; 
+      object-fit: cover;
       width: 100%;
-      height: 60px; 
+      height: 60px;
     }
   }
 
-  td.Colum-model{
+  td.Colum-model {
     width: 200px;
   }
 

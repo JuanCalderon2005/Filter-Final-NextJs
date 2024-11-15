@@ -1,34 +1,39 @@
-'use client'
+'use client';
+
 import styled from "styled-components";
 import { Suspense } from "react";
+import SidebarDashboard from "../../Organisms/home/sidebar";
 import Loading from "../../Atoms/loading";
-interface ILayout {
+
+interface LayoutProps {
     children: React.ReactNode;
 }
 
-const StylesLayout = styled.div`
+const Container = styled.div`
     display: flex;
     width: 100%;
     min-height: 100vh;
-    background-color: white;
+    background-color: #f5f5f5;
 `;
 
-const StyledMain = styled.main`
+const Content = styled.main`
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    flex-grow: 1; /* Ocupa todo el espacio restante */
-    background-color: #8b8a8a;
+    flex-grow: 1;
+    background-color: #f5f5f5;
 `;
 
-export default function Layout({ children }: ILayout) {
+const Layout: React.FC<LayoutProps> = ({ children }) => {
     return (
-        <StylesLayout>
-            <StyledMain>
+        <Container>
+            <SidebarDashboard />
+            <Content>
                 <Suspense fallback={<Loading />}>
                     {children}
                 </Suspense>
-            </StyledMain>
-        </StylesLayout>
-    )
-}
+            </Content>
+        </Container>
+    );
+};
+
+export default Layout;
