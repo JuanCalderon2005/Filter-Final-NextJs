@@ -1,5 +1,6 @@
-import { authOptions } from "@/app/api/auth";
+
 import { DefaultSession, getServerSession } from "next-auth";
+import { authOptions } from "../../api/auth/[...nextauth]/route";
 
 const defaultBaseUrl = "https://maintenancesystembc-production.up.railway.app/api/v1";
 
